@@ -8,30 +8,28 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  TextEditingController pesoController = TextEditingController();
-  TextEditingController alturaController = TextEditingController();
+  TextEditingController gasolinaController = TextEditingController();
+  TextEditingController alcoolController = TextEditingController();
 
   String infoResultado = "Verificar";
 
+  _foto() {
+    return Center(
+        child: Image.network(
+            "https://motorshow.com.br/wp-content/uploads/sites/2/2022/04/1103818-mcam-edit-03011807017-e1649100879581.jpg"));
+  }
+
   void _calcularImc() {
     setState(() {
-      double peso = double.parse(pesoController.text);
-      double altura = double.parse(alturaController.text);
+      double gasolina = double.parse(gasolinaController.text);
+      double alcool = double.parse(alcoolController.text);
 
-      double resultado = peso / (altura * altura);
+      double resultado = alcool / gasolina;
 
-      if (resultado < 18.5) {
-        infoResultado = 'Abaixo do Peso';
-      } else if (resultado >= 18.5 && resultado < 24.9) {
-        infoResultado = 'Peso Normal';
-      } else if (resultado > 25 && resultado < 29.9) {
-        infoResultado = 'Sobrepeso';
-      } else if (resultado > 30 && resultado < 34.9) {
-        infoResultado = 'Obesidade grau I';
-      } else if (resultado > 35 && resultado < 39.9) {
-        infoResultado = 'Obesidade Grau II:';
-      } else if (resultado >= 40) {
-        infoResultado = 'Obesidade Grau III ou Mórbida';
+      if (resultado <= 0.7) {
+        infoResultado = 'Melhor abastecer com  Alcool';
+      } else {
+        infoResultado = 'Melhor Abastecer com  Gasolina';
       }
     });
   }
@@ -59,8 +57,9 @@ class _HomeState extends State<Home> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          _campo("Peso", pesoController),
-          _campo("Altura", alturaController),
+          _foto(),
+          _campo("Gasolina", gasolinaController),
+          _campo("Alcool", alcoolController),
           _botao(),
           _texto(infoResultado),
         ],

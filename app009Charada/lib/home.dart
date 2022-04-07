@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -8,23 +9,13 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  TextEditingController gasolinaController = TextEditingController();
-  TextEditingController alcoolController = TextEditingController();
+  String mostrarNumero = "";
+  String titulo = "Pense em um n° de 0 à 10";
 
-  String infoResultado = "Verificar";
-
-  void _calcularImc() {
+  void _GetNumeroAleatorio() {
     setState(() {
-      double gasolina = double.parse(gasolinaController.text);
-      double alcool = double.parse(alcoolController.text);
-
-      double resultado = alcool / gasolina;
-
-      if (resultado <= 0.7) {
-        infoResultado = 'Melhor abastecer com  Alcool';
-      } else {
-        infoResultado = 'Melhor Abastecer com  Gasolina';
-      }
+      int numeroAleatorio = new Random().nextInt(11);
+      mostrarNumero = '$numeroAleatorio';
     });
   }
 
@@ -39,7 +30,7 @@ class _HomeState extends State<Home> {
 
   _titulo() {
     return AppBar(
-      title: Text("Calculador de IMC"),
+      title: Text("Charada"),
       centerTitle: true,
       backgroundColor: Colors.green,
     );
@@ -51,10 +42,9 @@ class _HomeState extends State<Home> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          _campo("Gasolina", gasolinaController),
-          _campo("Alcool", alcoolController),
+          _texto(titulo),
           _botao(),
-          _texto(infoResultado),
+          _texto(mostrarNumero),
         ],
       ),
     );
@@ -77,8 +67,8 @@ class _HomeState extends State<Home> {
       child: Container(
         height: 50.0,
         child: RaisedButton(
-          onPressed: _calcularImc,
-          child: Text("Calcular",
+          onPressed: _GetNumeroAleatorio,
+          child: Text("Sortear",
               style: TextStyle(color: Colors.white, fontSize: 20.0)),
           color: Colors.blue,
         ),
