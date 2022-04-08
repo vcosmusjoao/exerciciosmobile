@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -9,13 +8,31 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  String mostrarNumero = "";
-  String titulo = "Pense em um n° de 0 à 10";
+  TextEditingController pesoController = TextEditingController();
+  TextEditingController alturaController = TextEditingController();
 
-  void _GetNumeroAleatorio() {
+  String infoResultado = "Verificar";
+
+  void _calcularImc() {
     setState(() {
-      int numeroAleatorio = new Random().nextInt(11);
-      mostrarNumero = '$numeroAleatorio';
+      double peso = double.parse(pesoController.text);
+      double altura = double.parse(alturaController.text);
+
+      double resultado = peso / (altura * altura);
+
+      if (resultado < 18.5) {
+        infoResultado = 'Abaixo do Peso';
+      } else if (resultado >= 18.5 && resultado < 24.9) {
+        infoResultado = 'Peso Normal';
+      } else if (resultado > 25 && resultado < 29.9) {
+        infoResultado = 'Sobrepeso';
+      } else if (resultado > 30 && resultado < 34.9) {
+        infoResultado = 'Obesidade grau I';
+      } else if (resultado > 35 && resultado < 39.9) {
+        infoResultado = 'Obesidade Grau II:';
+      } else if (resultado >= 40) {
+        infoResultado = 'Obesidade Grau III ou Mórbida';
+      }
     });
   }
 
@@ -28,18 +45,17 @@ class _HomeState extends State<Home> {
     );
   }
 
-  _titulo() {
-    return AppBar(
-      title: Text("Charada"),
-      centerTitle: true,
-      backgroundColor: Colors.green,
-    );
-  }
-
   _foto() {
     return Center(
-      child: Image.network(
-          "https://i.pinimg.com/originals/f5/ad/56/f5ad565616004ad3f3464812dacae59c.jpg"),
+        child: (Image.network(
+            "https://www.plasticadosonho.com.br/wp-content/uploads/2017/12/blog-06-como-calcular-o-imc.jpg")));
+  }
+
+  _titulo() {
+    return AppBar(
+      title: Text("Calculador de IMC"),
+      centerTitle: true,
+      backgroundColor: Colors.green,
     );
   }
 
@@ -50,9 +66,10 @@ class _HomeState extends State<Home> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           _foto(),
-          _texto(titulo),
+          _campo("Peso", pesoController),
+          _campo("Altura", alturaController),
           _botao(),
-          _texto(mostrarNumero),
+          _texto(infoResultado),
         ],
       ),
     );
@@ -75,8 +92,8 @@ class _HomeState extends State<Home> {
       child: Container(
         height: 50.0,
         child: RaisedButton(
-          onPressed: _GetNumeroAleatorio,
-          child: Text("Sortear",
+          onPressed: _calcularImc,
+          child: Text("Calcular",
               style: TextStyle(color: Colors.white, fontSize: 20.0)),
           color: Colors.blue,
         ),
