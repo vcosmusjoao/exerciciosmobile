@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_aberturadeconta_2/info.dart';
 import 'home.dart';
 
 void main() {

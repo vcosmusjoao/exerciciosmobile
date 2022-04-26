@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_aberturadeconta_2/info.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -106,26 +105,8 @@ class _HomeState extends State<Home> {
           ),
         ),
         onPressed: () {
-          _onClickNavegacao(context);
+          _gerarInfo();
         });
-  }
-
-  _onClickNavegacao(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (BuildContext context) {
-          return Info(
-            valueNome: nome,
-            valueIdade: idade,
-            valueSex: holderSexo,
-            valueEscolaridade: holderEscola,
-            valueLimite: valorLimite,
-            valueNacionalidade: brasileiro,
-          );
-        },
-      ),
-    );
   }
 
   _dropdownSexo() {
