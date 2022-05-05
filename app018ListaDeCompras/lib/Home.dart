@@ -20,11 +20,12 @@ class _HomeState extends State<Home> {
     if (anotacao == null) {
       //salvando
       _tituloController.text = "";
-
+      _descricaoController.text = "";
       textoSalvarAtualizar = "Salvar";
     } else {
       //atualizar
       _tituloController.text = anotacao.titulo;
+      _descricaoController.text = anotacao.descricao;
       textoSalvarAtualizar = "Atualizar";
     }
 
@@ -32,7 +33,7 @@ class _HomeState extends State<Home> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text("$textoSalvarAtualizar tarefa"),
+            title: Text("$textoSalvarAtualizar mercadoria"),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
@@ -40,9 +41,15 @@ class _HomeState extends State<Home> {
                   controller: _tituloController,
                   autofocus: true,
                   decoration: InputDecoration(
-                      labelText: "Nome da Tarefa",
-                      hintText: "Digite  a tarefa..."),
+                      labelText: "Mercadoria",
+                      hintText: "Digite mercadoria..."),
                 ),
+                TextField(
+                  controller: _descricaoController,
+                  decoration: InputDecoration(
+                      labelText: "Quantidade",
+                      hintText: "Digite quantidade..."),
+                )
               ],
             ),
             actions: <Widget>[
@@ -85,12 +92,14 @@ class _HomeState extends State<Home> {
 
     if (anotacaoSelecionada == null) {
       //salvar
-      Anotacao anotacao = Anotacao(titulo);
+      Anotacao anotacao =
+          Anotacao(titulo, descricao, DateTime.now().toString());
       int resultado = await _db.salvarAnotacao(anotacao);
     } else {
       //atualizar
       anotacaoSelecionada.titulo = titulo;
-
+      anotacaoSelecionada.descricao = descricao;
+      anotacaoSelecionada.data = DateTime.now().toString();
       int resultado = await _db.atualizarAnotacao(anotacaoSelecionada);
     }
 
@@ -98,20 +107,6 @@ class _HomeState extends State<Home> {
     _descricaoController.clear();
 
     _recuperarAnotacoes();
-  }
-
-  _formatarData(String data) {
-    initializeDateFormatting("pt_BR");
-
-    //Year -> y month-> M Day -> d
-    // Hour -> H minute -> m second -> s
-    //var formatador = DateFormat("d/MMMM/y H:m:s");
-    var formatador = DateFormat.yMd("pt_BR");
-
-    DateTime dataConvertida = DateTime.parse(data);
-    String dataFormatada = formatador.format(dataConvertida);
-
-    return dataFormatada;
   }
 
   _removerAnotacao(int id) async {
@@ -130,7 +125,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Tarefas"),
+        title: Text("Minhas compras"),
         backgroundColor: Colors.lightGreen,
       ),
       body: Column(
@@ -143,7 +138,8 @@ class _HomeState extends State<Home> {
 
                     return Card(
                       child: ListTile(
-                        title: Text(anotacao.titulo),
+                        title: Text(
+                            anotacao.titulo + " (  ${anotacao.descricao} )"),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[

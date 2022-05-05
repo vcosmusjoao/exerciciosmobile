@@ -1,6 +1,6 @@
+import 'package:app016/model/Anotacao.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'package:app016/model/Anotacao.dart';
 
 class AnotacaoHelper {
   static final String nomeTabela = "anotacao";
